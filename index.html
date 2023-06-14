@@ -24,9 +24,9 @@
   <div class="row justified-content-center mt-5">
     <div class="col-lg-6 col-md-12 col-sm-12 m-auto">
       <div class="card card-body">
-        <h2 class="text-right mb-2"><img src="dnata_big.png" alt="logo" height="50px"></h2>
+        <h2 class="text-right mb-2"><a href="/"><img src="dnata_big.png" alt="logo" height="50px"></a></h2>
         <hr>
-        <h1 class="text-left mb-3"><i class="fas fa-book"></i>  Acronym Dictionary </h1>
+        <h3 class="text-center mb-3"><i class="fas fa-book"></i>  Acronym Dictionary </h3>
         
         
         <div class="input-group md-form form-sm form-1 pl-0">
@@ -35,13 +35,12 @@
                   aria-hidden="true"></i></span>
             </div>
             <input class="form-control my-0 py-1" type="text" id="myInput" placeholder="Search" aria-label="Search">
-           
-            <div class="input-group-append">
-              <a class="btn btn-danger" href="/"><i class="fa fa-eraser" aria-hidden="true" ></i> Clear</a>
-            </div>
+         
           </div>
           <br>
-          <table class="table table-hover table-responsive" id="resultsTable" style="display: none;">
+          <p id="noDataMessage" style="display: none;">No data available for the current search.</p>
+
+          <table class="table table-hover table-responsive" id="resultsTable" >
             <thead class="bg-dark text-light">
               <tr>
                 <th >Code</th>
@@ -130,16 +129,33 @@
 }
 
 
-$(document).ready(function(){
-  
-  $("#myInput").on("keyup", function() {
+$(document).ready(function() {
+  $("#myInput").on("input", function() {
     var value = $(this).val().toLowerCase();
-    $("#resultsTable tbody tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    var table = $("#resultsTable");
+    var rows = $("#resultsTable tbody tr");
+    var noDataMessage = $("#noDataMessage");
+
+    var visibleRows = rows.filter(function() {
+      var text = $(this).text().toLowerCase();
+      return text.includes(value);
     });
+
+    rows.hide(); // Hide all rows initially
+
+    if (visibleRows.length === 0) {
+      table.hide();
+      noDataMessage.show();
+    } else {
+      visibleRows.show();
+      table.show();
+      noDataMessage.hide();
+    }
   });
-  $("#resultsTable").show();
 });
+
+
+
 
 window.addEventListener('DOMContentLoaded', function () {
             // Fetch JSON data
