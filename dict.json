@@ -28098,5 +28098,10 @@
     "code": "CIP",
     "group": "Passenger Service",
     "definition": "Company Important Person"
+  },
+  {
+    "code": "AKE",
+    "group": "Ground Handling",
+    "definition": "The AKE container is a half-sized, lower deck container with many configurations.  The AKE is also commonly known as a LD3 container. Base size (L x W) 1,562 mm x 1,534 mm (61.5 inch x 60.4 inch )"
   }
 ]

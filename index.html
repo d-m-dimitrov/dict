@@ -129,30 +129,36 @@
 }
 
 
-$(document).ready(function() {
+$(document).ready(function(){
   $("#myInput").on("input", function() {
     var value = $(this).val().toLowerCase();
     var table = $("#resultsTable");
     var rows = $("#resultsTable tbody tr");
     var noDataMessage = $("#noDataMessage");
 
-    var visibleRows = rows.filter(function() {
-      var text = $(this).text().toLowerCase();
-      return text.includes(value);
-    });
+    if (value.length >= 2) {
+      var visibleRows = rows.filter(function() {
+        var text = $(this).text().toLowerCase();
+        return text.includes(value);
+      });
 
-    rows.hide(); // Hide all rows initially
+      rows.hide(); // Hide all rows initially
 
-    if (visibleRows.length === 0) {
-      table.hide();
-      noDataMessage.show();
+      if (visibleRows.length === 0) {
+        table.hide();
+        noDataMessage.show();
+      } else {
+        visibleRows.show();
+        table.show();
+        noDataMessage.hide();
+      }
     } else {
-      visibleRows.show();
-      table.show();
+      table.hide();
       noDataMessage.hide();
     }
   });
 });
+
 
 
 
