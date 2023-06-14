@@ -18,8 +18,8 @@
 </head>
 <body>
   <!-- Header -->
-  <div class="row mt-3">
-    <div class="col-md-10 m-auto">
+  <div class="row justified-content-center mt-5">
+    <div class="col-lg-6 col-md-8 col-sm-10 m-auto">
       <div class="card card-body">
         <h2 class="text-right mb-2"><img src="dnata_big.png" alt="logo" height="50px"></h2>
         <hr>
@@ -34,11 +34,11 @@
             <input class="form-control my-0 py-1" type="text" id="myInput" placeholder="Search" aria-label="Search">
            
             <div class="input-group-append">
-              <a class="btn btn-warning" href="/"><i class="fa fa-eraser" aria-hidden="true"></i> Clear</a>
+              <a class="btn btn-danger" href="/"><i class="fa fa-eraser" aria-hidden="true" ></i> Clear</a>
             </div>
           </div>
           <br>
-          <table class="table table-striped" id="resultsTable">
+          <table class="table table-striped" id="resultsTable" style="display: none;">
             <thead class="bg-dark text-light">
               <tr>
                 <th >Code</th>
@@ -128,12 +128,14 @@
 
 
 $(document).ready(function(){
+  
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#resultsTable tbody tr").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
+  $("#resultsTable").show();
 });
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -162,6 +164,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 .catch(error => {
                     console.error('Error:', error);
                 });
+                
         });
 
 
