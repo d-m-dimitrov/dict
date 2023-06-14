@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>dnata Acronym Dictionary</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="icon" type="image/png" href="dnata.png">
+  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+  <!-- Custom CSS -->
+  <style>
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="row mt-3">
+    <div class="col-md-10 m-auto">
+      <div class="card card-body">
+        <h2 class="text-right mb-2"><img src="dnata_big.png" alt="logo" height="50px"></h2>
+        <hr>
+        <h1 class="text-left mb-3"><i class="fas fa-book"></i>  Acronym Dictionary </h1>
+        
+        
+        <div class="input-group md-form form-sm form-1 pl-0">
+            <div class="input-group-prepend">
+              <span class="input-group-text blue lighten-3" id="findString"><i class="fas fa-search text-white"
+                  aria-hidden="true"></i></span>
+            </div>
+            <input class="form-control my-0 py-1" type="text" id="myInput" placeholder="Search" aria-label="Search">
+           
+            <div class="input-group-append">
+              <a class="btn btn-warning" href="/"><i class="fa fa-eraser" aria-hidden="true"></i> Clear</a>
+            </div>
+          </div>
+          <br>
+          <table class="table table-striped" id="resultsTable">
+            <thead class="bg-dark text-light">
+              <tr>
+                <th >Code</th>
+                <th >Group</th>
+                <th >Definition</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <!-- Results will be dynamically added here -->
+            </tbody>
+          </table>
+
+</div>
+</div>
+</div>
+  <!-- Table -->
+
+  
+
+</div>
+
+<br>
+
+
+  <!-- Footer -->
+  <div class="footer col-md-10 m-auto">
+    &copy; 2023 dnata UK Ltd. | Created by Dimitar Dimitrov
+  </div>
+
+  <!-- JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+  function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("resultsTable");
+  switching = true;
+  //Set the sorting direction to ascending:
+  dir = "asc";
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /*If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again.*/
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+
+
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#resultsTable tbody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+window.addEventListener('DOMContentLoaded', function () {
+            // Fetch JSON data
+            fetch('dict.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Get the table element by ID
+                    const table = document.getElementById('resultsTable');
+
+                  
+
+                    // Create table body and populate rows
+                    const tbody = document.createElement('tbody');
+                    data.forEach(obj => {
+                        const row = document.createElement('tr');
+                        Object.values(obj).forEach(value => {
+                            const cell = document.createElement('td');
+                            cell.textContent = value;
+                            row.appendChild(cell);
+                        });
+                        tbody.appendChild(row);
+                    });
+                    table.appendChild(tbody);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+
+
+  </script>
+</body>
+</html>
