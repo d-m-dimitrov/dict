@@ -115,35 +115,41 @@ $(document).ready(function(){
 
 
 window.addEventListener('DOMContentLoaded', function () {
-            // Fetch JSON data
-            fetch('dict.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Get the table element by ID
-                    const table = document.getElementById('resultsTable');
+    // Fetch JSON data
+    fetch('dict.json')
+        .then(response => response.json())
+        .then(data => {
+            // Get the table element by ID
+            const table = document.getElementById('resultsTable');
 
-                  
+            // Create table body and populate rows
+            const tbody = document.createElement('tbody');
+            data.forEach(obj => {
+                const row = document.createElement('tr');
+                Object.values(obj).forEach((value, index) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
 
-                    // Create table body and populate rows
-                    const tbody = document.createElement('tbody');
-                    data.forEach(obj => {
-                        const row = document.createElement('tr');
-                        Object.values(obj).forEach(value => {
-                            const cell = document.createElement('td');
-                            cell.textContent = value;
-                            row.appendChild(cell);
+                    // Add click event listener to table rows
+                    if (index === 0) {
+                        row.addEventListener('click', function () {
+                            const searchQuery = value.trim();
+                            const searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(searchQuery) + '+aviation';
+                            window.open(searchUrl, '_blank');
                         });
-                        tbody.appendChild(row);
-                    });
-                    table.appendChild(tbody);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                    }
                 });
-                
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
+});
 
-        function sortTable(columnIndex) {
+function sortTable(columnIndex) {
   var table = document.getElementById("resultsTable");
   var rows = Array.from(table.getElementsByTagName("tr"));
   var headerRow = rows.shift();
