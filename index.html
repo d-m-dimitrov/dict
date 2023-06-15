@@ -16,6 +16,11 @@
       padding: 20px;
       background-color: #f5f5f5;
     }
+    th {
+      cursor: pointer;
+    }
+
+    
   </style>
 </head>
 <body>
@@ -24,7 +29,7 @@
   <div class="row justified-content-center mt-5">
     <div class="col-lg-6 col-md-12 col-sm-12 m-auto">
       <div class="card card-body">
-        <h2 class="text-right mb-2"><a href="/"><img src="dnata_big.png" alt="logo" height="50px"></a></h2>
+        <h2 class="text-left mb-2"><a href="/"><img src="dnata_big.png" alt="logo" height="50px"></a></h2>
         <hr>
         <h3 class="text-center mb-3"><i class="fas fa-book"></i>  Acronym Dictionary </h3>
         
@@ -40,12 +45,12 @@
           <br>
           <p id="noDataMessage" style="display: none;">No data available for the current search.</p>
 
-          <table class="table table-hover table-responsive" id="resultsTable" >
+          <table class="table table-hover table-responsive" id="resultsTable" style="display: none;" >
             <thead class="bg-dark text-light">
               <tr>
-                <th >Code</th>
-                <th >Group</th>
-                <th >Definition</th>
+                <th onclick="sortTable(0)">Code</th>
+                <th onclick="sortTable(1)">Group</th>
+                <th onclick="sortTable(2)">Definition</th>
               </tr>
             </thead>
             <tbody id="resultsBody">
@@ -73,60 +78,6 @@
   <!-- JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
-  function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("resultsTable");
-  switching = true;
-  //Set the sorting direction to ascending:
-  dir = "asc";
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /*check if the two rows should switch place,
-      based on the direction, asc or desc:*/
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      //Each time a switch is done, increase this count by 1:
-      switchcount ++;
-    } else {
-      /*If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again.*/
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
 
 
 $(document).ready(function(){
@@ -136,7 +87,7 @@ $(document).ready(function(){
     var rows = $("#resultsTable tbody tr");
     var noDataMessage = $("#noDataMessage");
 
-    if (value.length >= 2) {
+    if (value.length >= 3) {
       var visibleRows = rows.filter(function() {
         var text = $(this).text().toLowerCase();
         return text.includes(value);
@@ -192,6 +143,44 @@ window.addEventListener('DOMContentLoaded', function () {
                 
         });
 
+        function sortTable(columnIndex) {
+  var table = document.getElementById("resultsTable");
+  var rows = Array.from(table.getElementsByTagName("tr"));
+  var headerRow = rows.shift();
+  var isAscending = true;
+
+  // Check if the table is currently sorted in ascending order
+  if (headerRow.cells[columnIndex].classList.contains("asc")) {
+    isAscending = false;
+    headerRow.cells[columnIndex].classList.remove("asc");
+    headerRow.cells[columnIndex].classList.add("desc");
+  } else {
+    headerRow.cells[columnIndex].classList.remove("desc");
+    headerRow.cells[columnIndex].classList.add("asc");
+  }
+
+  rows.sort(function (rowA, rowB) {
+    var cellA = rowA.cells[columnIndex].innerText.trim().toLowerCase();
+    var cellB = rowB.cells[columnIndex].innerText.trim().toLowerCase();
+
+    if (cellA < cellB) {
+      return isAscending ? -1 : 1;
+    } else if (cellA > cellB) {
+      return isAscending ? 1 : -1;
+    } else {
+      return 0;
+    }
+  });
+
+  // Clear the table body
+  var tbody = table.getElementsByTagName("tbody")[0];
+  tbody.innerHTML = "";
+
+  // Re-populate the table body with sorted rows
+  rows.forEach(function (row) {
+    tbody.appendChild(row);
+  });
+}
 
 
   </script>
