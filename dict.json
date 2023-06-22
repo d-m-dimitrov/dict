@@ -5673,6 +5673,11 @@
     "code": "HF/HLF",
     "group": "Airlines",
     "definition": "Hapagfly (Germany)"
+  }, 
+  {
+    "code": "UL/ALK",
+    "group": "Airlines",
+    "definition": "SriLankan Airlines (Sri Lanka)"
   },
   {
     "code": "HB/HAR",
