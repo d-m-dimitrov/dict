@@ -4523,6 +4523,11 @@
     "code": "SN/BEL",
     "group": "Airlines",
     "definition": "Brussels Airlines (Belgium)"
+  },  
+  {
+    "code": "LX/SWR",
+    "group": "Airlines",
+    "definition": "Swiss International Airlines (Switzerland)"
   },
   {
     "code": "NT/IBB",
@@ -5673,11 +5678,6 @@
     "code": "HF/HLF",
     "group": "Airlines",
     "definition": "Hapagfly (Germany)"
-  }, 
-  {
-    "code": "UL/ALK",
-    "group": "Airlines",
-    "definition": "SriLankan Airlines (Sri Lanka)"
   },
   {
     "code": "HB/HAR",
